@@ -154,7 +154,7 @@ function Shop() {
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => {
                 if (e.key === 'Enter' && searchTerm === '/admin') {
-                  window.open('http://localhost:5000/admin-panel.html', '_blank');
+                  window.open('https://furniture-b-pied.vercel.app/admin', '_blank');
                   setSearchTerm('');
                 }
               }}
