@@ -79,7 +79,7 @@ function AppContent() {
   };
   const AdminRedirect = () => {
     useEffect(() => {
-      window.location.href = 'http://localhost:5000/admin-panel.html';
+      window.location.href = 'https://furniture-b-pied.vercel.app/admin';
     }, []);
     return <div>Redirecting to admin panel...</div>;
   };
