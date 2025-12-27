@@ -365,7 +365,7 @@ function AppContent() {
 
         {/* WhatsApp Float Button - Shows on all pages */}
         <div 
-          onClick={() => window.open('https://wa.me/?text=hi', '_blank')}
+          onClick={() => window.open('https://wa.me/917704866437?text=hi', '_blank')}
           style={{
             position: 'fixed',
             bottom: '20px',
