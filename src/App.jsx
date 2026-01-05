@@ -210,6 +210,19 @@ function AppContent() {
         </div>
       </section>
 
+      {/* Map Section */}
+      <section style={{padding: '4rem 8rem', backgroundColor: 'white'}}>
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3563.604333840858!2d83.39418237424108!3d26.725084476759477!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399143689a6626d1%3A0xc10b99ec97028148!2sNauka%20Vihar%2C%20Ramghar%20Tal%2C%20Gorakhpur%2C%20Uttar%20Pradesh%20273017!5e0!3m2!1sen!2sin!4v1766992629046!5m2!1sen!2sin" 
+          width="100%" 
+          height="500" 
+          style={{border: 0, borderRadius: '20px', display: 'block'}} 
+          allowFullScreen="" 
+          loading="lazy" 
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </section>
+
 
 
       {/* Search Modal */}
@@ -291,34 +304,33 @@ function AppContent() {
 
 
       {/* Footer */}
-      <footer className="footer" style={{backgroundColor: '#FCF8F3'}}>
-        <div className="container">
-          <div className="footer-content">
+      <footer className="footer" style={{backgroundColor: '#FCF8F3', padding: '2rem 0 1rem 0'}}>
+        <div className="container" style={{maxWidth: '1200px', margin: '0 auto', padding: '0 2rem'}}>
+          <div className="footer-content" style={{display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '2fr 1fr 1fr', gap: '2rem', marginBottom: '1.5rem'}}>
             <div className="footer-section">
-              <h3 style={{color: '#B88E2F'}}>Furniro.</h3>
-              <p style={{color: '#666'}}>400 University Drive Suite 200 Coral Gables,<br />FL 33134 USA</p>
+              <h3 style={{color: '#B88E2F', marginBottom: '0.8rem', fontSize: '1.3rem', fontWeight: 'bold'}}>Furniro.</h3>
+              <p style={{color: '#666', lineHeight: '1.5', fontSize: '0.9rem', margin: 0}}>400 University Drive Suite 200<br />Coral Gables, FL 33134 USA</p>
             </div>
             <div className="footer-section">
-              <h4 style={{color: '#B88E2F'}}>Links</h4>
-              <ul>
-                <li><a href="/" style={{color: '#666'}}>Home</a></li>
-                <li><a href="/shop" style={{color: '#666'}}>Shop</a></li>
-                <li><a href="/about" style={{color: '#666'}}>About</a></li>
-                <li><a href="/contact" style={{color: '#666'}}>Contact</a></li>
+              <h4 style={{color: '#333', marginBottom: '0.8rem', fontSize: '1rem', fontWeight: '600'}}>Links</h4>
+              <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
+                <li style={{marginBottom: '0.5rem'}}><a href="/" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>Home</a></li>
+                <li style={{marginBottom: '0.5rem'}}><a href="/shop" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>Shop</a></li>
+                <li style={{marginBottom: '0.5rem'}}><a href="/about" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>About</a></li>
+                <li style={{marginBottom: '0.5rem'}}><a href="/contact" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>Contact</a></li>
               </ul>
             </div>
             <div className="footer-section">
-              <h4 style={{color: '#B88E2F'}}>Help</h4>
-              <ul>
-                <li><a href="#" style={{color: '#666'}}>Payment Options</a></li>
-                <li><a href="#" style={{color: '#666'}}>Returns</a></li>
-                <li><a href="#" style={{color: '#666'}}>Privacy Policies</a></li>
+              <h4 style={{color: '#333', marginBottom: '0.8rem', fontSize: '1rem', fontWeight: '600'}}>Help</h4>
+              <ul style={{listStyle: 'none', padding: 0, margin: 0}}>
+                <li style={{marginBottom: '0.5rem'}}><a href="#" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>Payment Options</a></li>
+                <li style={{marginBottom: '0.5rem'}}><a href="#" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>Returns</a></li>
+                <li style={{marginBottom: '0.5rem'}}><a href="#" style={{color: '#666', textDecoration: 'none', fontSize: '0.9rem'}}>Privacy Policies</a></li>
               </ul>
             </div>
-
           </div>
-          <div className="footer-bottom">
-            <p style={{color: '#666'}}>2023 furniro. All rights reserved</p>
+          <div className="footer-bottom" style={{borderTop: '1px solid #ddd', paddingTop: '1rem'}}>
+            <p style={{color: '#666', textAlign: 'center', margin: 0, fontSize: '0.85rem'}}>2023 furniro. All rights reserved</p>
           </div>
         </div>
       </footer>
