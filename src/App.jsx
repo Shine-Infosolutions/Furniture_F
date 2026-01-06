@@ -6,10 +6,10 @@ import Shop from './Shop'
 import About from './About'
 import Contact from './Contact'
 import Admin from './Admin'
+import { DataProvider, useData } from './DataContext'
 
 function AppContent() {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const { products, categories } = useData();
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', message: '' });
@@ -41,39 +41,16 @@ function AppContent() {
   };
 
   useEffect(() => {
-    fetchCategories();
-    fetchProducts();
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
   }, []);
-
-
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/categories`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setCategories(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      setCategories([]);
-    }
-  };
-
-  const fetchProducts = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setProducts(data.products || []);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      setProducts([]);
-    }
-  };
 
 
 
@@ -119,7 +96,7 @@ function AppContent() {
     return (
     <>
       {/* Hero Section */}
-      <section className="hero-section">
+      <section className="hero-section" style={{position: 'relative', height: '100vh', overflow: 'hidden'}}>
         <video 
           className="hero-video"
           autoPlay 
@@ -127,8 +104,73 @@ function AppContent() {
           muted 
           playsInline
           src={heroVideo}
+          style={{width: '100%', height: '100%', objectFit: 'cover'}}
         />
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.4)'}}></div>
+        
+        {/* Movie-style Text Container - Left and Right Bottom */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 3,
+          pointerEvents: 'none'
+        }}>
+          {/* Left Bottom Text */}
+          <div style={{
+            position: 'absolute',
+            bottom: '8%',
+            left: '5%',
+            color: 'white',
+            textAlign: 'left',
+            fontFamily: 'serif'
+          }}>
+            <div style={{
+              opacity: 0,
+              animation: 'textLoop 8s infinite'
+            }}>
+              <div style={{fontSize: isMobile ? '1.2rem' : '1.8rem', fontWeight: '300', marginBottom: '0.3rem', textShadow: '2px 2px 4px rgba(0,0,0,0.9)'}}>"Premium Quality Furniture"</div>
+              <div style={{fontSize: isMobile ? '0.9rem' : '1.2rem', fontWeight: '200', textShadow: '1px 1px 2px rgba(0,0,0,0.9)'}}>Handcrafted Excellence</div>
+            </div>
+          </div>
+          
+          {/* Right Bottom Text */}
+          <div style={{
+            position: 'absolute',
+            bottom: '8%',
+            right: '5%',
+            color: 'white',
+            textAlign: 'right',
+            fontFamily: 'serif'
+          }}>
+            <div style={{
+              opacity: 0,
+              animation: 'textLoop 8s infinite 4s'
+            }}>
+              <div style={{fontSize: isMobile ? '1.2rem' : '1.8rem', fontWeight: '300', marginBottom: '0.3rem', textShadow: '2px 2px 4px rgba(0,0,0,0.9)'}}>"Modern Home Essentials"</div>
+              <div style={{fontSize: isMobile ? '0.9rem' : '1.2rem', fontWeight: '200', textShadow: '1px 1px 2px rgba(0,0,0,0.9)'}}>Contemporary Design</div>
+            </div>
+          </div>
+        </div>
+        
+        <style>{`
+          @keyframes textLoop {
+            0%, 10% { opacity: 0; transform: translateY(20px) scale(0.9); }
+            15%, 85% { opacity: 1; transform: translateY(0) scale(1); }
+            90%, 100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+          }
+          
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+          }
+          
+          .hero-video {
+            animation: pulse 8s ease-in-out infinite;
+          }
+        `}</style>
       </section>
 
       {/* Browse Categories */}
@@ -138,20 +180,24 @@ function AppContent() {
           <div className="category-scroll-container" style={{overflow: 'hidden', position: 'relative'}}>
             <div className="category-scroll" style={{
               display: 'flex',
-              animation: 'scroll 20s linear infinite',
+              animation: 'scroll 10s linear infinite',
               width: 'fit-content'
             }}>
-              {[...categories, ...categories, ...categories].map((category, index) => {
-                const categoryProduct = products.find(p => p.category === category.name);
-                if (!categoryProduct?.images?.[0]) return null;
+              {[...products, ...products, ...products].map((product, index) => {
+                if (!product?.images?.[0]) return null;
                 return (
-                  <div key={`${category.name}-${index}`} className="category-item" style={{
+                  <div key={`${product._id}-${index}`} className="category-item" style={{
                     minWidth: '300px',
                     margin: '0 1rem',
-                    flexShrink: 0
-                  }}>
-                    <img src={categoryProduct.images[0]} alt={category.name} />
-                    <h3>{category.name} ({category.count})</h3>
+                    flexShrink: 0,
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => e.target.closest('.category-scroll').style.animationPlayState = 'paused'}
+                  onMouseLeave={(e) => e.target.closest('.category-scroll').style.animationPlayState = 'running'}
+                  onClick={() => navigate(`/shop?category=${product.category}`)}
+                  >
+                    <img src={product.images[0]} alt={product.name} />
+                    <h3>{product.name}</h3>
                   </div>
                 );
               }).filter(Boolean)}
@@ -222,8 +268,6 @@ function AppContent() {
           referrerPolicy="no-referrer-when-downgrade"
         />
       </section>
-
-
 
       {/* Search Modal */}
       {showSearchModal && (
@@ -308,7 +352,7 @@ function AppContent() {
         <div className="container" style={{maxWidth: '1200px', margin: '0 auto', padding: '0 2rem'}}>
           <div className="footer-content" style={{display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '2fr 1fr 1fr', gap: '2rem', marginBottom: '1.5rem'}}>
             <div className="footer-section">
-              <h3 style={{color: '#B88E2F', marginBottom: '0.8rem', fontSize: '1.3rem', fontWeight: 'bold'}}>Furniro.</h3>
+              <h3 style={{color: '#B88E2F', marginBottom: '0.8rem', fontSize: '1.3rem', fontWeight: 'bold'}}>IFB.</h3>
               <p style={{color: '#666', lineHeight: '1.5', fontSize: '0.9rem', margin: 0}}>400 University Drive Suite 200<br />Coral Gables, FL 33134 USA</p>
             </div>
             <div className="footer-section">
@@ -330,7 +374,7 @@ function AppContent() {
             </div>
           </div>
           <div className="footer-bottom" style={{borderTop: '1px solid #ddd', paddingTop: '1rem'}}>
-            <p style={{color: '#666', textAlign: 'center', margin: 0, fontSize: '0.85rem'}}>2023 furniro. All rights reserved</p>
+            <p style={{color: '#666', textAlign: 'center', margin: 0, fontSize: '0.85rem'}}>2025 IFB Sitting Collection. All rights reserved<br/>Developed by - Shine Infosolutions</p>
           </div>
         </div>
       </footer>
@@ -344,7 +388,7 @@ function AppContent() {
         <header className="header" style={{background: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', position: 'fixed', top: 0, width: '100%', zIndex: 1000}}>
           <div className="container" style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: window.innerWidth <= 480 ? '0.4rem 0.8rem' : '0.5rem 1rem', height: window.innerWidth <= 480 ? '50px' : '60px', maxWidth: '100%'}}>
             <Link to="/" className="logo" style={{fontSize: window.innerWidth <= 480 ? '1.2rem' : '1.5rem', fontWeight: 'bold', color: '#B88E2F', cursor: 'pointer', textDecoration: 'none'}}>
-              <span>🪑 Furniro</span>
+              <span>🪑 IFB</span>
             </Link>
             
             <nav className="nav" style={{display: window.innerWidth <= 768 ? 'none' : 'flex', gap: '2rem', position: 'absolute', left: '50%', transform: 'translateX(-50%)'}}>
@@ -357,7 +401,7 @@ function AppContent() {
             <div style={{display: 'flex', alignItems: 'center', gap: '1rem', minWidth: '300px', justifyContent: 'flex-end'}}>
               {!isMobile && (
                 <>
-                  <span style={{color: '#B88E2F', fontWeight: '500', fontSize: '0.85rem'}}>📧 info@furniro.com</span>
+                  <span style={{color: '#B88E2F', fontWeight: '500', fontSize: '0.85rem'}}>📧 info@ifb.com</span>
                   <span style={{color: '#B88E2F', fontWeight: '500', fontSize: '0.85rem'}}>📞 +1 (555) 123-4567</span>
                 </>
               )}
@@ -426,7 +470,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
-      <AppContent />
+      <DataProvider>
+        <AppContent />
+      </DataProvider>
     </Router>
   )
 }
