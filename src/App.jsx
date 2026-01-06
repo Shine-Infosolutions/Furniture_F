@@ -96,7 +96,7 @@ function AppContent() {
     return (
     <>
       {/* Hero Section */}
-      <section className="hero-section" style={{position: 'relative', height: '100vh', overflow: 'hidden'}}>
+      <section className="hero-section" style={{position: 'relative', height: isMobile ? '60vh' : '100vh', overflow: 'hidden'}}>
         <video 
           className="hero-video"
           autoPlay 
